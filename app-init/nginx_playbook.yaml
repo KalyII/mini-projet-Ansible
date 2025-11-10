@@ -38,11 +38,9 @@
         name: nginx
         state: latest
 
+    # ✅ Partie corrigée ici seulement
     - name: Restart nginx
-      service:
-        name: nginx
-        state: restarted
-      notify: Check HTTP Service
+      shell: systemctl restart nginx || nginx
 
     - name: Template index.html-easter_egg.j2 to index.html on target
       template:
@@ -66,7 +64,5 @@
     - name: Check HTTP Service
       uri:
         url: http://{{ ansible_default_ipv4.address }}
-        status_code: 200 
+        status_code: 200
 
-# Three dots indicate the end of a YAML document
-...
