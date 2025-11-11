@@ -1,1 +1,39 @@
 ---
+- name: Ensure Docker SDK for Python is installed
+  ansible.builtin.pip:
+    name: docker
+    executable: pip3
+
+- name: Create a custom Docker network
+  community.docker.docker_network:
+    name: custom_net
+    driver: bridge
+
+- name: Pull Nginx Docker image
+  community.docker.docker_image:
+    name: nginx
+    tag: latest
+    source: pull
+  tags:
+    - pull-nginx-image
+
+- name: Run Nginx container
+  community.docker.docker_container:
+    name: nginx
+    image: nginx:latest
+    state: started
+    restart_policy: always
+    ports:
+      - "80:80"
+    networks:
+      - name: custom_net
+  tags:
+    - run-nginx-container
+
+- name: Ensure Nginx container is running
+  community.docker.docker_container:
+    name: nginx
+    state: started
+  tags:
+    - ensure-nginx-running
+

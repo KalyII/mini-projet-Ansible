@@ -1,0 +1,5 @@
+ansible_host: 10.0.65.5
+ansible_user: admin
+ansible_password: admin
+ansible_sudo_pass: admin
+
